@@ -19,7 +19,6 @@ import Adafruit_BBIO.GPIO as GPIO
 
 class Event:
     startTime = datetime.time()
-    endTime = datetime.time()
     flushType = ""
     
     def __init__(self, start):

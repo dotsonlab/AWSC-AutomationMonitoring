@@ -36,28 +36,30 @@ class Flow:
     speed = .001
     
     def checkFlow(self, time):
-        currentTime = time
+        self.currentTime = time
         if GPIO.event_detected("P9_41"):
             self.totalPulses = self.totalPulses + 1
             self.eventPulses = self.eventPulses + 1
 
+    def reset():
+        self.totalPulses = 0
 
     def log(self):
         day = datetime.date.today()
-        now = datetime.datetime.time(datetime.datetime.now()).replace(microsecond = 0)
-        time = now.isoformat()
+        time = self.currentTime.isoformat()
         liters = self.computeLiters(self.totalPulses)
         LPM = self.computeLiters(self.eventPulses)
+        LPM = LPM*12
         self.eventPulses = 0
 
         filename = "%s_Toilet.csv" % day.isoformat()
         target = open(filename, 'a')
-        target.write("%s, %d, %d\n" % (time, LPM, liters))
+        target.write("%s, %f, %f\n" % (time, LPM, liters))
         target.close()
         threading.Timer(5.0, self.log).start()
 
     def computeLiters(self, numberOfPulses):
-        self.liters = numberOfPulses / 2200
+        self.liters = numberOfPulses / 2200.0
         return self.liters
 
     def enableStepper(self):
