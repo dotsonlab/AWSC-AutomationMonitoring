@@ -10,8 +10,8 @@ Inputs: A schedule of events based on entered times.
 Outputs: Sequence of events to a screen as they happen. 
 daily flow rate data
 '''
-from toilet_schedule import Schedule
-from toilet_flow import Flow
+from toiletschedule import Schedule
+from flow import Flow
 import datetime
 import time
 
