@@ -28,19 +28,37 @@ class Flow:
     GPIO.setup("P9_41", GPIO.IN) #flow sensor
     GPIO.output("P8_7", GPIO.LOW) #set stepper motor direction
     GPIO.add_event_detect("P9_41", GPIO.RISING)
-    currentTime = datetime.time()
     tag = ""
+    currentTime = datetime.datetime()
+    lastDetected = datetime.datetime()
+    shortTimer = threading.Timer()
+    longTimer = threading.Timer()
     eventPulses = 0
     totalPulses = 0
     steps = 28250
     speed = .001
     
-    def checkFlow(self, time):
-        self.currentTime = time
+    def checkFlow(self):
+        self.currentTime = datetime.datetime.now().replace(microsecond = 0)
         if GPIO.event_detected("P9_41"):
+            self.lastDetected = datetime.datetime.now().replace(microsecond = 0)
             self.totalPulses = self.totalPulses + 1
             self.eventPulses = self.eventPulses + 1
+            if self.longTimer != None:
+                self.longTimer.cancel()
+                self.log()
+        elif isFlowing() == False:
+            if self.shortTimer != None:
+                self.shortTimer.cancel()
+                self.log()
 
+    def isFlowing():
+        timeDelta = self.currentTime - self.lastDetected
+        if timeDelta.second < 5:
+            return True
+        else:
+            return False
+            
     def reset():
         self.totalPulses = 0
 
@@ -56,7 +74,10 @@ class Flow:
         target = open(filename, 'a')
         target.write("%s, %f, %f\n" % (time, LPM, liters))
         target.close()
-        threading.Timer(5.0, self.log).start()
+        if isFlowing() == True:
+           self.shortTimer = threading.Timer(1.0, self.log).start()
+        else:
+           self.longTimer = threading.Timer(900.0, self.log).start()
 
     def computeLiters(self, numberOfPulses):
         self.liters = numberOfPulses / 2200.0

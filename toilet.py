@@ -35,7 +35,7 @@ while True:
     if option == 1:
         currentTime = datetime.datetime.time(datetime.datetime.now()).replace(microsecond = 0)
         midnight = currentTime.replace(hour = 23, minute = 59, second = 59)
-        meter.currentTime = currentTime
+        meter.currentTime = datetime.datetime.now().replace(microsecond = 0)
         meter.log()# start logging
         
         print "\n\nCtrl + Pause/Break at any time to stop operation.\n"
@@ -81,7 +81,7 @@ while True:
                     time.sleep(1)
                     print nextEvent.displayEvent() + " loaded."
             else:
-                meter.checkFlow(currentTime)#if no events to trigger; check flow
+                meter.checkFlow()#if no events to trigger; check flow
 
 #Import, save, edit a schedule or create a new one.
     elif option == 2:
