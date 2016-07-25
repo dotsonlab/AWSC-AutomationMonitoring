@@ -29,19 +29,43 @@ class Schedule:
         print "6: Return to main menu"
         
     def addEvent(self):
+        r = re.complie('[0-2]\d:[0-5]\d:[0-5]\d')
+        matches = False
+        while matches == False:
+            enteredTime = raw_input("Please enter the time you want the event to "
+                                    "occur. Format as HH:MM:SS (eg 15:30:12) ")
+            if r.match(enteredTime) is not None:
+                matches = True
+                
         start = datetime.time()
-        enteredTime = raw_input("Please enter the time you want the event to "
-                                  "occur. Format as HH:MM:SS (eg 15:30:12) ")
         start = datetime.datetime.strptime(enteredTime, "%H:%M:%S").time()
         datetime.time(3, 55, 55)
         
+        matches = False
+        while matches == False:
+            enteredTime = raw_input("Please enter the time you want to stop "
+                                    "the event. Format as HH:MM:SS (eg 15:31:06) ")
+            if r.match(enteredTime) is not None:
+                matches = True
+                
         end = datetime.time()
-        enteredTime = raw_input("Please enter the time you want to stop "
-                                  "the event. Format as HH:MM:SS (eg 15:31:06) ")
         end = datetime.datetime.strptime(enteredTime, "%H:%M:%S").time()
         datetime.time(3, 55, 55)
 
-        tag = raw_input("Please enter which valve this event is for. Your options are kitchen_sink, bathroom_sink, and shower.\n")
+        tag = ""
+        while tag == "":
+            print "\n1: Kitchen Sink"
+            print "2: Bathroom Sink"
+            print "3: Shower"
+            input = raw_input("\nPlease select an option.\n")
+            if input == "1":
+                tag = "kitchen_sink"
+            elif input == "2":
+                tag = "bathroom_sink"
+            elif input == "3":
+                tag = "shower"
+            else:
+                print "The was not a valid option please try again.\n"
 
         new = Event(start, end, tag)
         

@@ -85,10 +85,13 @@ while True:
 
 #Import, save, edit a schedule or create a new one.
     elif option == 2:
-        selection = 0
-        while selection != 7:
+        while True:
             workingSchedule.displayMenu()
-            selection = int(raw_input("\nPlease select an option.\n"))
+            selection = 0
+            while selection == 0:
+                input = raw_input("\nPlease select an option.\n")
+                if input.isdigit():
+                    selection = int(input)
             
             if selection == 1:
                 workingSchedule.importSchedule()
@@ -101,7 +104,13 @@ while True:
                 else:
                     print ""
                     workingSchedule.displaySchedule()
-                    item = int(raw_input(("\nSelect an event to remove.\n"))) - 1
+                    item = -1
+                    
+                    while item == -1
+                        toRemove = raw_input(("\nSelect an event to remove.\n"))
+                        if toRemove.isdigit()
+                            item = int(toRemove) - 1
+                            
                     workingSchedule.eventList.pop(item)
                     workingSchedule.eventCount -= 1
             elif selection == 4:

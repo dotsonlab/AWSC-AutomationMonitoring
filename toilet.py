@@ -85,11 +85,14 @@ while True:
 
 #Import, save, edit a schedule or create a new one.
     elif option == 2:
-        selection = 0
         while True:
             workingSchedule.displayMenu()
-            selection = int(raw_input("\nPlease select an option.\n"))
-            
+            selection = 0
+            while selection == 0:
+                input = raw_input("\nPlease select an option.\n")
+                if input.isdigit():
+                    selection = int(input)
+                    
             if selection == 1:
                 workingSchedule.importSchedule()
                 workingSchedule.displaySchedule()
