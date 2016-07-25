@@ -13,6 +13,7 @@ daily flow rate data
 #Handles all scheduling related tasks
 from toiletevent import Event
 import datetime
+import re
 
 class Schedule:
     
@@ -29,9 +30,15 @@ class Schedule:
         print "6: Return to main menu"
         
     def addEvent(self):
+        r = re.complie('[0-2]\d:[0-5]\d:[0-5]\d')
+        matches = False
+        while matches == False:
+            enteredTime = raw_input("Please enter the time you want the event to "
+                                    "occur. Format as HH:MM:SS (eg 15:30:12) ")
+            if r.match(enteredTime) is not None:
+                matches = True
+                
         start = datetime.time()
-        enteredTime = raw_input("Please enter the time you want the event to "
-                                  "occur. Format as HH:MM:SS (eg 15:30:12) ")
         start = datetime.datetime.strptime(enteredTime, "%H:%M:%S").time()
         datetime.time(3, 55, 55)
         
